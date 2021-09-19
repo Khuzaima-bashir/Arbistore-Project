@@ -1,20 +1,21 @@
 from django.contrib import admin
+from django.contrib.admin import StackedInline, ModelAdmin
 
-from arbistore.models import Brand, Category, ImagesDetails,  Products, ProductsDetails, SubCategory, User
+from arbistore.models import Brand, Category, Product, ProductDetail, ProductImage, SubCategory, User
 
 
-class ImageInlineAdmin(admin.StackedInline):
+class ProductImageInline(StackedInline):
     extra = 1
-    model = ImagesDetails
+    model = ProductImage
 
 
-class ImageAdmin(admin.ModelAdmin):
-    inlines = [ImageInlineAdmin]
+class ProductImageAdmin(ModelAdmin):
+    inlines = [ProductImageInline]
 
 
 admin.site.register(User)
-admin.site.register(Products)
+admin.site.register(Product)
 admin.site.register(Category)
-admin.site.register(ProductsDetails, ImageAdmin)
+admin.site.register(ProductDetail, ProductImageAdmin)
 admin.site.register(SubCategory)
 admin.site.register(Brand)

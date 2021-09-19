@@ -1,12 +1,10 @@
 from rest_framework.serializers import CharField, EmailField, ModelSerializer
 
-from arbistore.models import Category ,  Products, SubCategory, User
+from arbistore.models import Category, Product, SubCategory, User
 
 
 class RegisterSerializer(ModelSerializer):
-    email = EmailField(
-        required=True,
-    )
+    email = EmailField(required=True,)
     password = CharField(write_only=True, required=True)
     password2 = CharField(write_only=True, required=True)
 
@@ -16,10 +14,7 @@ class RegisterSerializer(ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            full_name=validated_data['full_name'],
-            address=validated_data['address']
+            **validated_data
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -29,19 +24,19 @@ class RegisterSerializer(ModelSerializer):
 class ProductsSerializer(ModelSerializer):
 
     class Meta:
-        model = Products
-        fields = "__all__"
+        model = Product
+        fields = '__all__'
 
 
 class CategorySerializer(ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ("name")
+        fields = ('name')
 
 
 class SubCategorySerializer(ModelSerializer):
 
     class Meta:
         model = SubCategory
-        fields = ("name")
+        fields = ('name')

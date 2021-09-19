@@ -1,36 +1,48 @@
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from arbistore.models import Products, User, Category, SubCategory
-from arbistore.serializers import RegisterSerializer, ProductsSerializer
+from arbistore.models import Product, User, Category, SubCategory
+from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, SubCategorySerializer
 
 
 class ProductList(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
-        products = Products.objects.all()
+        products = Product.objects.all()
+        serialize = ProductsSerializer(products, many=True)
+        return Response(serialize.data)
+
+    def get(self, request, format=None):
+        products = Product.objects.all()
         serialize = ProductsSerializer(products, many=True)
         return Response(serialize.data)
 
 
 class Categories(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
-        categories = [category.name for category in Category.objects.all()]
-        return Response(categories)
+        categories = Category.objects.all()
+        serialize = CategorySerializer(categories, many=True)
+        return Response(serialize.data)
+
+    def get(self, request, format=None):
+        categories = Category.objects.all()
+        serialize = CategorySerializer(categories, many=True)
+        return Response(serialize.data)
 
 
 class SubCategories(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
-        sub_categories = [sub_category.name for sub_category in SubCategory.objects.all()]
-        return Response(sub_categories)
+        sub_categories = SubCategory.objects.all()
+        serialize = SubCategorySerializer(sub_categories, many=True)
+        return Response(serialize.data)
+
+    def get(self, request, format=None):
+        sub_categories = SubCategory.objects.all()
+        serialize = SubCategorySerializer(sub_categories, many=True)
+        return Response(serialize.data)
 
 
 class RegisterView(CreateAPIView):
@@ -39,9 +51,8 @@ class RegisterView(CreateAPIView):
 
 
 class ProductFetch(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
 
     def post(self, request, pk):
-        product = Products.objects.get(pk=pk)
+        product = Product.objects.get(pk=pk)
         serialized_product = ProductsSerializer(product)
         return Response(serialized_product.data)

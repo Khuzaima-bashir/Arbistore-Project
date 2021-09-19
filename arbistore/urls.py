@@ -2,12 +2,12 @@ from django.urls import include, path
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-from arbistore.views import Categories , ProductFetch, ProductList, RegisterView, SubCategories
+from arbistore.views import Categories, ProductFetch, ProductList, RegisterView, SubCategories
 
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('verify/', TokenVerifyView.as_view(), name="verify"),
+    path('verify/', TokenVerifyView.as_view(), name='verify'),
     path('products/', ProductList.as_view(), name='products'),
     path('categories/', Categories.as_view(), name='categories'),
     path('subcategories/', SubCategories.as_view(), name='subcategories'),

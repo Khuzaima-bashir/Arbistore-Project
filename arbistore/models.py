@@ -1,8 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db import models
+from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, EmailField,\
+    Model, ForeignKey, ImageField, IntegerField, TextField
+
+from arbistore.enum import Choices
 
 
-class Manager(BaseUserManager):
+class UserManager(BaseUserManager):
 
     def create_user(self, username, password=None):
         new_user = self.model(username=username)
@@ -20,18 +23,18 @@ class Manager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    username = models.CharField(null=False, max_length=200, unique=True)
-    email = models.EmailField(null=False, max_length=300, unique=True)
-    full_name = models.CharField(null=False, max_length=300, unique=True)
-    address = models.CharField(null=False, max_length=300)
-    is_admin = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    username = CharField(max_length=200, unique=True)
+    email = EmailField(max_length=300, unique=True)
+    full_name = CharField(max_length=300, unique=True)
+    address = CharField(max_length=300)
+    is_admin = BooleanField(default=False)
+    is_staff = BooleanField(default=False)
+    is_superuser = BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELD = ['username', 'email', 'full_name']
 
-    objects = Manager()
+    objects = UserManager()
 
     def __str__(self):
         return self.username
@@ -46,54 +49,55 @@ class User(AbstractBaseUser):
         return True
 
 
-class Category(models.Model):
-    name = models.CharField(null=False, max_length=200, unique=True)
+class Category(Model):
+    name = CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.name
 
 
-class Brand(models.Model):
-    name = models.CharField(null=False, max_length=200, unique=True)
+class Brand(Model):
+    name = CharField(max_length=200, unique=True)
 
     def __str__(self):
         return self.name
 
 
-class Products(models.Model):
-    name = models.CharField(null=False, max_length=200, unique=True)
-    gender = models.CharField(null=False, max_length=20, choices=[("Male", 'Male'), ("Female", 'Female')])
-    product_description = models.CharField(null=False, max_length=500)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
-    brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
+class BaseModel(Model):
+    created_on = DateTimeField(verbose_name='created on', auto_now_add=True)
+    updated_on = DateTimeField(verbose_name='date joined', auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+
+class Product(BaseModel):
+    name = CharField(max_length=200, unique=True)
+    gender = CharField(max_length=20, choices=[("Male", 'Male'), ("Female", 'Female')])
+    description = TextField(max_length=500)
+    category_id = ForeignKey(Category, on_delete=CASCADE)
+    brand_id = ForeignKey(Brand, on_delete=CASCADE)
 
     def __str__(self):
         return self.name
 
 
-class ProductsDetails(models.Model):
-    color = models.CharField(null=False, max_length=20, choices=[
-        ('Black', 'Black'),
-        ('Blue', 'Blue'),
-        ('Red', 'Red'),
-        ('Yellow', 'Yellow'),
-        ('Purple', 'Purple'),
-        ('White', 'White'),
-        ('Green', 'Green')])
-    stock = models.IntegerField(null=False)
-    size = models.CharField(null=False, max_length=20, choices=[('XL', 'XL'), ('L', 'L'), ('M', 'M'), ('S', 'S')])
-    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
+class ProductDetail(Model):
+    color = CharField(max_length=20, choices=Choices.ColorChoice.value)
+    stock = IntegerField(blank=False)
+    size = CharField(max_length=20, choices=Choices.Sizes.value)
+    product_id = ForeignKey(Product, on_delete=CASCADE)
 
 
-class ImagesDetails(models.Model):
-    product_details_id = models.ForeignKey(ProductsDetails, on_delete=models.CASCADE)
-    images = models.ImageField(upload_to='media/')
+class ProductImage(Model):
+    product_detail_id = ForeignKey(ProductDetail, on_delete=CASCADE)
+    images = ImageField(upload_to='media/')
 
 
-class SubCategory(models.Model):
-    name = models.CharField(null=False, max_length=200)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
-    products_id = models.ForeignKey(Products, on_delete=models.CASCADE)
+class SubCategory(Model):
+    name = CharField(max_length=200)
+    category_id = ForeignKey(Category, on_delete=CASCADE)
+    products_id = ForeignKey(Product, on_delete=CASCADE)
 
     def __str__(self):
         return self.name
