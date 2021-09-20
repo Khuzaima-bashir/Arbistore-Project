@@ -11,5 +11,4 @@ PyJWT==2.1.0
 pytz==2021.1
 sqlparse==0.4.2
 gunicorn==19.7.1
-psycopg2==2.7.3.2
 whitenoise==3.3.1
