@@ -56,3 +56,8 @@ class ProductFetch(RetrieveAPIView):
         product = Product.objects.get(pk=pk)
         serialized_product = ProductsSerializer(product)
         return Response(serialized_product.data)
+
+    def get(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        serialized_product = ProductsSerializer(product)
+        return Response(serialized_product.data)

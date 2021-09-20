@@ -15,4 +15,4 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ArbistoreProject.settings')
 
 application = get_wsgi_application()
 
-web: gunicorn ArbistoreProject.wsgi --log-file -
+#web: gunicorn ArbistoreProject.wsgi --log-file -
