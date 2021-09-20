@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, EmailField,\
-    Model, ForeignKey, ImageField, IntegerField, TextField
+    Model, ForeignKey, ImageField, IntegerField, TextField, ManyToManyField
 
 from arbistore.enum import Choices
 
@@ -49,13 +49,6 @@ class User(AbstractBaseUser):
         return True
 
 
-class Category(Model):
-    name = CharField(max_length=200, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Brand(Model):
     name = CharField(max_length=200, unique=True)
 
@@ -69,6 +62,21 @@ class BaseModel(Model):
 
     class Meta:
         abstract = True
+
+
+class Category(Model):
+    name = CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class SubCategory(Model):
+    name = TextField(max_length=200)
+    category = ForeignKey(Category, on_delete=CASCADE, default=1)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(BaseModel):
@@ -92,12 +100,3 @@ class ProductDetail(Model):
 class ProductImage(Model):
     product_detail_id = ForeignKey(ProductDetail, on_delete=CASCADE)
     images = ImageField(upload_to='media/')
-
-
-class SubCategory(Model):
-    name = CharField(max_length=200)
-    category_id = ForeignKey(Category, on_delete=CASCADE)
-    products_id = ForeignKey(Product, on_delete=CASCADE)
-
-    def __str__(self):
-        return self.name
