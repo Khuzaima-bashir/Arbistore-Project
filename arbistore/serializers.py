@@ -6,11 +6,10 @@ from arbistore.models import Category, Product, SubCategory, User
 class RegisterSerializer(ModelSerializer):
     email = EmailField(required=True, )
     password = CharField(write_only=True, required=True)
-    password2 = CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'email', 'full_name', 'address')
+        fields = ('username', 'password', 'email', 'full_name', 'address')
 
     def create(self, validated_data):
         user = User.objects.create(
