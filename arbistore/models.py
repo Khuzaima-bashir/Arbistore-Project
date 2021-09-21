@@ -71,6 +71,12 @@ class Category(Model):
         return self.name
 
 
+class ProductDetail(Model):
+    color = CharField(max_length=20, choices=Choices.ColorChoice.value)
+    stock = IntegerField(blank=False)
+    size = CharField(max_length=20, choices=Choices.Sizes.value)
+
+
 class SubCategory(Model):
     name = TextField(max_length=200)
     category = ForeignKey(Category, on_delete=CASCADE, default=1)
@@ -85,16 +91,11 @@ class Product(BaseModel):
     description = TextField(max_length=500)
     category_id = ForeignKey(Category, on_delete=CASCADE)
     brand_id = ForeignKey(Brand, on_delete=CASCADE)
+    product_detail = ForeignKey(ProductDetail, on_delete=CASCADE, default=1)
+    sub_category = ManyToManyField(SubCategory)
 
     def __str__(self):
         return self.name
-
-
-class ProductDetail(Model):
-    color = CharField(max_length=20, choices=Choices.ColorChoice.value)
-    stock = IntegerField(blank=False)
-    size = CharField(max_length=20, choices=Choices.Sizes.value)
-    product_id = ForeignKey(Product, on_delete=CASCADE)
 
 
 class ProductImage(Model):

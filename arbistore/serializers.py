@@ -21,27 +21,29 @@ class RegisterSerializer(ModelSerializer):
 
 
 class SubCategorySerializer(ModelSerializer):
-
     class Meta:
         model = SubCategory
-        fields = ('name',)
+        fields = "__all__"
 
 
 class CategorySerializer(ModelSerializer):
-    sub_category = SerializerMethodField()
-
     class Meta:
         model = Category
         fields = "__all__"
 
-    def get_sub_category(self, obj):
-        return SubCategory.objects.filter(category=obj.id,
-                                          ).values_list('name', flat=True)
-
 
 class ProductsSerializer(ModelSerializer):
     category_id = CategorySerializer()
+    sub_category = SerializerMethodField()
 
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_sub_category(self, obj):
+        sub_categories = []
+        for sub_category in obj.sub_category.all():
+            sub_categories.append({'id': sub_category.id, 'name': sub_category.name})
+        return sub_categories
+
+
