@@ -20,7 +20,7 @@ SIMPLE_JWT = {
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://arbistore-app.herokuapp.com/']
 
