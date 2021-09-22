@@ -32,6 +32,8 @@ lib/
 lib64/
 parts/
 sdist/
+.idea/
+3
 var/
 wheels/
 share/python-wheels/

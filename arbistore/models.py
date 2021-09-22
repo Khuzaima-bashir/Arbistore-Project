@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, EmailField,\
+from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, EmailField, \
     Model, ForeignKey, ImageField, IntegerField, TextField, ManyToManyField
 
-from arbistore.enum import Choices
+from arbistore.enum import ColorChoices, SizeChoices
 
 
 class UserManager(BaseUserManager):
@@ -23,9 +23,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    username = CharField(max_length=200, unique=True)
     email = EmailField(max_length=300, unique=True)
-    full_name = CharField(max_length=300, unique=True)
+    username = CharField(max_length=200, unique=True)
+    full_name = CharField(max_length=300)
     address = CharField(max_length=300)
     is_admin = BooleanField(default=False)
     is_staff = BooleanField(default=False)
@@ -49,19 +49,19 @@ class User(AbstractBaseUser):
         return True
 
 
-class Brand(Model):
-    name = CharField(max_length=200, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class BaseModel(Model):
     created_on = DateTimeField(verbose_name='created on', auto_now_add=True)
     updated_on = DateTimeField(verbose_name='date joined', auto_now_add=True)
 
     class Meta:
         abstract = True
+
+
+class Brand(Model):
+    name = CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Category(Model):
@@ -71,15 +71,9 @@ class Category(Model):
         return self.name
 
 
-class ProductDetail(Model):
-    color = CharField(max_length=20, choices=Choices.ColorChoice.value)
-    stock = IntegerField(blank=False)
-    size = CharField(max_length=20, choices=Choices.Sizes.value)
-
-
 class SubCategory(Model):
     name = TextField(max_length=200)
-    category = ForeignKey(Category, on_delete=CASCADE, default=1)
+    category = ForeignKey(Category, on_delete=CASCADE)
 
     def __str__(self):
         return self.name
@@ -91,13 +85,19 @@ class Product(BaseModel):
     description = TextField(max_length=500)
     category_id = ForeignKey(Category, on_delete=CASCADE)
     brand_id = ForeignKey(Brand, on_delete=CASCADE)
-    product_detail = ForeignKey(ProductDetail, on_delete=CASCADE, default=1)
     sub_category = ManyToManyField(SubCategory)
 
     def __str__(self):
         return self.name
 
 
+class ProductDetail(Model):
+    color = CharField(max_length=20, choices=ColorChoices.Colors.value)
+    size = CharField(max_length=20, choices=SizeChoices.Sizes.value)
+    stock = IntegerField(blank=False)
+    product = ForeignKey(Product, on_delete=CASCADE)
+
+
 class ProductImage(Model):
-    product_detail_id = ForeignKey(ProductDetail, on_delete=CASCADE)
     images = ImageField(upload_to='media/')
+    product_detail = ForeignKey(ProductDetail, on_delete=CASCADE)
