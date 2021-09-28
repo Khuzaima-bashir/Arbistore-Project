@@ -1,6 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as CoreValidationException
-from rest_framework.serializers import CharField, EmailField, ModelSerializer, SerializerMethodField, ValidationError
+from rest_framework.serializers import CharField, EmailField, ModelSerializer, SerializerMethodField, ValidationError, \
+    StringRelatedField
 
 from arbistore.models import Category, Product, SubCategory, User
 
@@ -35,15 +36,11 @@ class SubCategorySerializer(ModelSerializer):
 
 
 class CategorySerializer(ModelSerializer):
-    sub_categories = SerializerMethodField('get_sub_categories')
+    sub_category = StringRelatedField(many=True)
 
     class Meta:
         model = Category
-        fields = ('name', 'sub_categories')
-
-    def get_sub_categories(self, obj):
-        return SubCategory.objects.filter(category=obj.id,
-                                          ).values_list('name', flat=True)
+        fields = ('name', 'sub_category')
 
 
 class ProductCategorySerializer(ModelSerializer):
@@ -55,14 +52,8 @@ class ProductCategorySerializer(ModelSerializer):
 
 class ProductsSerializer(ModelSerializer):
     category_id = ProductCategorySerializer()
-    sub_category = SerializerMethodField()
+    sub_category = StringRelatedField(many=True)
 
     class Meta:
         model = Product
         fields = '__all__'
-
-    def get_sub_category(self, product):
-        sub_categories = []
-        for sub_category in product.sub_category.all():
-            sub_categories.append({'id': sub_category.id, 'name': sub_category.name})
-        return sub_categories

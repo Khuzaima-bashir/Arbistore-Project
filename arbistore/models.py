@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, EmailField, \
     Model, ForeignKey, ImageField, IntegerField, TextField, ManyToManyField
 
-from arbistore.enum import ColorChoices, SizeChoices
+from arbistore.constants import COLORS, SIZES
 
 
 class UserManager(BaseUserManager):
@@ -73,7 +73,7 @@ class Category(Model):
 
 class SubCategory(Model):
     name = TextField(max_length=200)
-    category = ForeignKey(Category, on_delete=CASCADE)
+    category = ForeignKey(Category, on_delete=CASCADE, related_name='sub_category')
 
     def __str__(self):
         return self.name
@@ -92,8 +92,8 @@ class Product(BaseModel):
 
 
 class ProductDetail(Model):
-    color = CharField(max_length=20, choices=ColorChoices.Colors.value)
-    size = CharField(max_length=20, choices=SizeChoices.Sizes.value)
+    color = CharField(max_length=20, choices=COLORS)
+    size = CharField(max_length=20, choices=SIZES)
     stock = IntegerField(blank=False)
     product = ForeignKey(Product, on_delete=CASCADE)
 

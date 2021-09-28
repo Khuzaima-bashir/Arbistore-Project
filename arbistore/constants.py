@@ -1,8 +1,4 @@
-from enum import Enum
-
-
-class ColorChoices(Enum):
-    Colors = [
+COLORS = [
         ('Black', 'Black'),
         ('Blue', 'Blue'),
         ('Red', 'Red'),
@@ -10,13 +6,11 @@ class ColorChoices(Enum):
         ('Purple', 'Purple'),
         ('White', 'White'),
         ('Green', 'Green')
-    ]
+]
 
-
-class SizeChoices(Enum):
-    Sizes = [
+SIZES = [
         ('XL', 'XL'),
         ('L', 'L'),
         ('M', 'M'),
         ('S', 'S')
-    ]
+]
