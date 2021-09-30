@@ -1,4 +1,4 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,7 +6,7 @@ from arbistore.models import Product, User, Category
 from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer
 
 
-class ProductList(APIView):
+class ProductList(ListAPIView):
 
     def get(self, request, format=None):
         products = Product.objects.all()

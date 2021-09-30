@@ -1,4 +1,4 @@
-COLORS = [
+COLORSCHOICES = [
         ('Black', 'Black'),
         ('Blue', 'Blue'),
         ('Red', 'Red'),
@@ -8,9 +8,14 @@ COLORS = [
         ('Green', 'Green')
 ]
 
-SIZES = [
+SIZESCHOICES = [
         ('XL', 'XL'),
         ('L', 'L'),
         ('M', 'M'),
         ('S', 'S')
+]
+
+GENDERSCHOICES = [
+        (1, 'Male'),
+        (2, 'Female')
 ]
