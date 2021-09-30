@@ -2,7 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 import os
-#import django_heroku
+import django_heroku
 
 SECRET_KEY = 'django-insecure-otrrjjeu7#ib+3+tt8all+pk!bhz=n6)31r05%f&2ya-x*d+^7'
 
@@ -20,7 +20,7 @@ SIMPLE_JWT = {
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://arbistore-app.herokuapp.com/']
 
@@ -130,4 +130,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
 
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
