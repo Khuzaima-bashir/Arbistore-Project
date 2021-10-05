@@ -2,6 +2,7 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 import os
+
 import django_heroku
 
 SECRET_KEY = 'django-insecure-otrrjjeu7#ib+3+tt8all+pk!bhz=n6)31r05%f&2ya-x*d+^7'
@@ -20,9 +21,9 @@ SIMPLE_JWT = {
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://arbistore-app.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://arbistore-project.herokuapp.com/', '*']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'arbistore',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +55,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'ArbistoreProject.urls'
 
@@ -82,7 +87,7 @@ WSGI_APPLICATION = 'ArbistoreProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'arbi4',
+        'NAME': 'arbi6',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
@@ -119,7 +124,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, './media/')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -129,5 +134,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
+CSRF_COOKIE_NAME = "csrftoken"
 
 django_heroku.settings(locals())

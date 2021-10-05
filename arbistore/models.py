@@ -46,7 +46,7 @@ class Product(TimeStampModel):
     name = models.CharField(max_length=100, unique=True)
     gender = models.IntegerField(choices=GENDERSCHOICES)
     price = models.IntegerField(blank=False)
-    short_description = models.CharField(max_length=100)
+    full_description = models.TextField(max_length=500)
     category_name = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_name")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="brand")
     sub_categories = models.ManyToManyField(SubCategories)
@@ -55,14 +55,17 @@ class Product(TimeStampModel):
         return self.name
 
 
-class ProductDetail(TimeStampModel):
+class ProductColor(TimeStampModel):
     color = models.CharField(max_length=200, blank=False, choices=COLORSCHOICES)
-    full_description = models.TextField(max_length=500)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_detail')
+
+
+class ProductSizeStock(TimeStampModel):
     size = models.CharField(max_length=20, choices=SIZESCHOICES)
     stock = models.IntegerField(blank=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_detail')
+    product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="product_size_stock")
 
 
 class ProductImage(TimeStampModel):
     image = models.ImageField(upload_to='media/')
-    product_detail = models.ForeignKey(ProductDetail, on_delete=models.CASCADE, related_name="product_images")
+    product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='product_color_image')

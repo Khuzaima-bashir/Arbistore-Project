@@ -1,7 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.serializers import CharField, EmailField, ModelSerializer, StringRelatedField
 
-from arbistore.models import Category, Product, SubCategories, User, ProductDetail, ProductImage
+from arbistore.models import Category, Product, SubCategories, User, ProductColor, ProductImage, ProductSizeStock
 
 
 class RegisterSerializer(ModelSerializer):
@@ -22,6 +22,7 @@ class RegisterSerializer(ModelSerializer):
 
 
 class SubCategorySerializer(ModelSerializer):
+
     class Meta:
         model = SubCategories
         fields = "__all__"
@@ -43,24 +44,35 @@ class ProductCategorySerializer(ModelSerializer):
 
 
 class ProductImageSerializer(ModelSerializer):
+
     class Meta:
         model = ProductImage
         fields = ("image",)
 
 
-class ProductDetailSerializer(ModelSerializer):
-    product_images = ProductImageSerializer(many=True)
+class ProductSizeStockSerializer(ModelSerializer):
 
     class Meta:
-        model = ProductDetail
-        fields = "__all__"
+        model = ProductSizeStock
+        fields = ("size", "stock")
+
+
+class ProductColorSerializer(ModelSerializer):
+    product_size_stock = ProductSizeStockSerializer(many=True)
+    product_color_image = ProductImageSerializer(many=True)
+
+    class Meta:
+        model = ProductColor
+        fields = ("color", "product_size_stock", "product_color_image")
 
 
 class ProductsSerializer(ModelSerializer):
-    product_detail = ProductDetailSerializer(many=True)
+    product_detail = ProductColorSerializer(many=True)
     category_name = ProductCategorySerializer()
     sub_categories = StringRelatedField(many=True)
+    brand = StringRelatedField()
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ("id", "name", "gender", "price", "product_detail", "category_name",
+                  "sub_categories", "brand", "full_description")
