@@ -1,5 +1,9 @@
+from django.contrib.auth.models import update_last_login
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.serializers import CharField, EmailField, ModelSerializer, StringRelatedField
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from rest_framework_simplejwt.settings import api_settings
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from arbistore.models import Category, Product, SubCategories, User, ProductColor, ProductImage, ProductSizeStock
 
@@ -10,7 +14,7 @@ class RegisterSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'full_name')
+        fields = ('username', 'password', 'email', 'full_name', 'address')
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -19,6 +23,38 @@ class RegisterSerializer(ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class UserSerializer(ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
+class TokenObtainPairSerializer(TokenObtainSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        return RefreshToken.for_user(user)
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        refresh = self.get_token(self.user)
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        my_user = User.objects.filter(pk=self.user.id).first()
+        if my_user:
+            print(my_user.username)
+            data['user'] = UserSerializer(my_user).data
+
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+
+        return data
 
 
 class SubCategorySerializer(ModelSerializer):

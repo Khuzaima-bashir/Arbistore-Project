@@ -1,25 +1,19 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenViewBase
 
 from arbistore.models import Product, User, Category
-from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer
+from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, TokenObtainPairSerializer
 
 
 class ProductList(ListAPIView):
-
-    def get(self, request, format=None):
-        products = Product.objects.all()
-        serialize = ProductsSerializer(products, many=True)
-        return Response(serialize.data)
+    queryset = Product.objects.all()
+    serializer_class = ProductsSerializer
 
 
-class Categories(APIView):
-
-    def get(self, request, format=None):
-        categories = Category.objects.all()
-        serialize = CategorySerializer(categories, many=True)
-        return Response(serialize.data)
+class Categories(ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class RegisterView(CreateAPIView):
@@ -30,3 +24,7 @@ class RegisterView(CreateAPIView):
 class ProductFetch(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductsSerializer
+
+
+class TokenObtainPairView(TokenViewBase):
+    serializer_class = TokenObtainPairSerializer
