@@ -3,7 +3,7 @@ from datetime import timedelta
 import dj_database_url
 import os
 
-# import django_heroku
+import django_heroku
 
 SECRET_KEY = 'django-insecure-otrrjjeu7#ib+3+tt8all+pk!bhz=n6)31r05%f&2ya-x*d+^7'
 
@@ -141,4 +141,4 @@ CORS_ORIGIN_WHITELIST = (
 )
 CSRF_COOKIE_NAME = "csrftoken"
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
