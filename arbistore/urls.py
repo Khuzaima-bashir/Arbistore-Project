@@ -1,9 +1,9 @@
 from django.urls import include, path
 from django.conf.urls.static import static
-from rest_framework_simplejwt.views import  TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenRefreshView
 from django.conf import settings
 
-from arbistore.views import Categories, ProductFetch, ProductList, RegisterView, TokenObtainPairView
+from arbistore.views import Categories, ProductFetch, ProductList, RegisterView, TokenObtainPairView, TokenVerifyView
 
 urlpatterns = [
                   path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

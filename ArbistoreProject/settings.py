@@ -3,7 +3,7 @@ from datetime import timedelta
 import dj_database_url
 import os
 
-import django_heroku
+# import django_heroku
 
 SECRET_KEY = 'django-insecure-otrrjjeu7#ib+3+tt8all+pk!bhz=n6)31r05%f&2ya-x*d+^7'
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'arbistore',
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,7 @@ WSGI_APPLICATION = 'ArbistoreProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'arbi6',
+        'NAME': 'arbi',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
@@ -140,4 +141,4 @@ CORS_ORIGIN_WHITELIST = (
 )
 CSRF_COOKIE_NAME = "csrftoken"
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

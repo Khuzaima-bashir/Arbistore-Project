@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenViewBase
 
 from arbistore.models import Product, User, Category
-from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, TokenObtainPairSerializer
+from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, TokenObtainPairSerializer,\
+    UserTokenVerifySerializer
 
 
 class ProductList(ListAPIView):
@@ -28,3 +29,7 @@ class ProductFetch(RetrieveAPIView):
 
 class TokenObtainPairView(TokenViewBase):
     serializer_class = TokenObtainPairSerializer
+
+
+class TokenVerifyView(TokenViewBase):
+    serializer_class = UserTokenVerifySerializer
