@@ -35,7 +35,7 @@ class Category(TimeStampModel):
 
 
 class SubCategories(TimeStampModel):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='sub_categories')
 
     def __str__(self):
@@ -43,8 +43,8 @@ class SubCategories(TimeStampModel):
 
 
 class Product(TimeStampModel):
-    name = models.CharField(max_length=100, unique=True)
-    gender = models.IntegerField(choices=GENDERSCHOICES)
+    name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=20)
     price = models.IntegerField(blank=False)
     full_description = models.TextField(max_length=500)
     category_name = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_name")
@@ -56,12 +56,12 @@ class Product(TimeStampModel):
 
 
 class ProductColor(TimeStampModel):
-    color = models.CharField(max_length=200, blank=False, choices=COLORSCHOICES)
+    color = models.CharField(max_length=100, blank=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_detail')
 
 
 class ProductSizeStock(TimeStampModel):
-    size = models.CharField(max_length=20, choices=SIZESCHOICES)
+    size = models.CharField(max_length=200)
     stock = models.IntegerField(blank=False)
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="product_size_stock")
 
