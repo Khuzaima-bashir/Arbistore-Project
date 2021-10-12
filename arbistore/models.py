@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from arbistore.constants import COLORSCHOICES, SIZESCHOICES, GENDERSCHOICES
-
 
 class User(AbstractUser):
     full_name = models.CharField(max_length=200)
