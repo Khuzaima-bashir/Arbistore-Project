@@ -2,6 +2,7 @@ import jwt
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import CharField, EmailField, ModelSerializer, StringRelatedField
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenVerifySerializer
 from rest_framework_simplejwt.settings import api_settings
@@ -100,7 +101,7 @@ class ProductCategorySerializer(ModelSerializer):
 class ProductImageSerializer(ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ("image",)
+        fields = ["image"]
 
 
 class ProductSizeStockSerializer(ModelSerializer):
@@ -120,7 +121,7 @@ class ProductColorSerializer(ModelSerializer):
 
 class ProductsSerializer(ModelSerializer):
     product_detail = ProductColorSerializer(many=True)
-    category_name = ProductCategorySerializer()
+    category_name = StringRelatedField()
     sub_categories = StringRelatedField(many=True)
     brand = StringRelatedField()
 

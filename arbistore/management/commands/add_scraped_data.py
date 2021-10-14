@@ -4,6 +4,7 @@ from random import randint
 from django.core.management.base import BaseCommand
 
 from arbistore.models import Brand, Category, Product, ProductColor, ProductSizeStock, ProductImage, SubCategories
+from arbistore.constants import COLORSCHOICES
 
 
 def create_category(category_name):
@@ -51,7 +52,13 @@ def create_brand(brand_name):
 def create_product_colors(colors, product):
     product_colors = []
     for product_color in colors:
-        new_product_color = ProductColor(color=product_color, product=product)
+        product_color_list = product_color.split(' ')
+
+        for color in product_color_list:
+            color = color.split('/')[0]
+            if color.lower() in COLORSCHOICES:
+                new_product_color = ProductColor(color=color, product=product)
+
         new_product_color.save()
         product_colors.append(new_product_color)
     return product_colors
@@ -59,6 +66,7 @@ def create_product_colors(colors, product):
 
 def create_product_sizes_stock(product_colors, sizes):
     for product_color in product_colors:
+
         for current_size in sizes:
             product_size_stock = ProductSizeStock(size=current_size, stock=randint(0, 100),
                                                   product_color=product_color)

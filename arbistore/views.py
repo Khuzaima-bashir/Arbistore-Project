@@ -1,5 +1,4 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
-from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenViewBase
 
 from arbistore.models import Product, User, Category
