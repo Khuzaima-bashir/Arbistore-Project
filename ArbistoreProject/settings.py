@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'https://arbistore-project.herokuapp.com/', '*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

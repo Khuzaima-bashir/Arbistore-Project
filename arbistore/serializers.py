@@ -2,15 +2,14 @@ import jwt
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import CharField, EmailField, ModelSerializer, StringRelatedField
 from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenVerifySerializer
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from arbistore.models import Category, Product, SubCategories, User, ProductColor, ProductImage, ProductSizeStock
 from ArbistoreProject.settings import SECRET_KEY
+from arbistore.models import Category, Product, SubCategories, User, ProductColor, ProductImage, ProductSizeStock
 
 
 class RegisterSerializer(ModelSerializer):
@@ -81,21 +80,21 @@ class UserTokenVerifySerializer(TokenVerifySerializer):
 class SubCategorySerializer(ModelSerializer):
     class Meta:
         model = SubCategories
-        fields = "__all__"
+        fields = ("id", "name")
 
 
 class CategorySerializer(ModelSerializer):
-    sub_categories = StringRelatedField(many=True)
+    sub_categories = SubCategorySerializer(many=True)
 
     class Meta:
         model = Category
-        fields = ('name', 'sub_categories')
+        fields = ('id', 'name', 'sub_categories')
 
 
 class ProductCategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = ("name",)
+        fields = ("id", "name",)
 
 
 class ProductImageSerializer(ModelSerializer):
@@ -121,8 +120,8 @@ class ProductColorSerializer(ModelSerializer):
 
 class ProductsSerializer(ModelSerializer):
     product_detail = ProductColorSerializer(many=True)
-    category_name = StringRelatedField()
-    sub_categories = StringRelatedField(many=True)
+    category_name = ProductCategorySerializer()
+    sub_categories = SubCategorySerializer(many=True)
     brand = StringRelatedField()
 
     class Meta:
