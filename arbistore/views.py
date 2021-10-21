@@ -4,17 +4,13 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenViewBase
 
 from arbistore.models import Product, User, Category
-from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, TokenObtainPairSerializer\
-    , UserTokenVerifySerializer
+from arbistore.serializers import CategorySerializer, ProductsSerializer, RegisterSerializer, TokenObtainPairSerializer, \
+    UserTokenVerifySerializer
 
 
-class ProductList(APIView, LimitOffsetPagination):
-
-    def get(self, request):
-        products = Product.objects.all()
-        results = self.paginate_queryset(products, request, view=self)
-        serialized_products = ProductsSerializer(results, many=True)
-        return self.get_paginated_response(serialized_products.data)
+class ProductList(ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductsSerializer
 
 
 class Categories(ListAPIView):
