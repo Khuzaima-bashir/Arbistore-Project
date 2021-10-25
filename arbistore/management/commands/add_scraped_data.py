@@ -75,8 +75,8 @@ def create_product_sizes_stock(product_colors, sizes):
 
 def add_product_images(product_colors, product_images):
     for image_index_finder in range(len(product_colors)):
-        image_path = product_images[image_index_finder]['url']
-        product_image = ProductImage(image=image_path, product_color=product_colors[image_index_finder])
+        image_url = product_images[image_index_finder]['url']
+        product_image = ProductImage(image=image_url, product_color=product_colors[image_index_finder])
         product_image.save()
 
 

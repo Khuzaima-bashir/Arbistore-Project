@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.files import File
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
 
 
 class User(AbstractUser):
@@ -65,5 +68,5 @@ class ProductSizeStock(TimeStampModel):
 
 
 class ProductImage(TimeStampModel):
-    image = models.ImageField(upload_to='media/', max_length=255)
+    image = models.TextField(max_length=255, blank=False)
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='product_color_image')
