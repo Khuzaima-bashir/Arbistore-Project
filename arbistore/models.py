@@ -65,5 +65,5 @@ class ProductSizeStock(TimeStampModel):
 
 
 class ProductImage(TimeStampModel):
-    image = models.ImageField(upload_to='media/')
+    image = models.ImageField(upload_to='media/', max_length=255)
     product_color = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name='product_color_image')
