@@ -17,4 +17,4 @@ urlpatterns = [
                   path('product_view/<int:pk>/', ProductFetch.as_view(), name='product_fetch'),
                   path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
                   path('api-auth/', include('rest_framework.urls')),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ]

@@ -1,4 +1,4 @@
-COLORSCHOICES = ['black', 'silver', 'gray', 'white', 'maroon', 'red', 'purple', 'fuchsia', 'green', 'lime',
+COLORS_CHOICES = ['black', 'silver', 'gray', 'white', 'maroon', 'red', 'purple', 'fuchsia', 'green', 'lime',
                  'olive', 'yellow', 'navy', 'blue', 'teal', 'aqua', 'aliceblue',
                  'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'lanchedalmond',
                  'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse', 'chocolate',

@@ -31,8 +31,6 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 21,
-
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -92,7 +90,7 @@ WSGI_APPLICATION = 'ArbistoreProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'arbi',
+        'NAME': 'arbi2',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
